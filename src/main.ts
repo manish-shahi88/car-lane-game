@@ -34,6 +34,7 @@ const player = new Circle(new Point(300, DIMENSIONS.CANVAS_HEIGHT - 40), 20);
 // Initialize game variables
 let gameSpeed = 1;
 let laneLine = 0;
+let score = 0;
 let isGameOver = false;
 let gameStarted = false;
 let targetX = player.center.x;
@@ -83,10 +84,11 @@ function draw() {
     ctx.beginPath();
     ctx.drawImage(carImage, 215, 390, 122, 258, circle.center.x - 20, circle.center.y - 40, 40, 80);
     ctx.stroke();
-    circle.center.y += clamp(SPEED * gameSpeed, 0, 10);
+    circle.center.y += clamp(SPEED * gameSpeed, 0, 20);
 
     // Reset obstacles that have moved off-screen
     if (circle.center.y > DIMENSIONS.CANVAS_HEIGHT) {
+      score++;
       circle.center.y = getRandomInt(-200, 0);
     }
 
@@ -95,6 +97,14 @@ function draw() {
       isGameOver = true;
     }
   });
+
+  //draw score
+    ctx.beginPath();
+    ctx.fillStyle = "green";
+    ctx.font = "20px sans-serif";
+    ctx.fillText(`Score: ${score}`,20,20)
+    ctx.closePath();
+    
 
   // Smoothly transition player position
   if (player.center.x < targetX) {
