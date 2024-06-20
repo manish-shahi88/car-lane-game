@@ -30,6 +30,7 @@ const circles = [circle1, circle2, circle3];
 
 // Define the player circle
 const player = new Circle(new Point(300, DIMENSIONS.CANVAS_HEIGHT - 40), 20);
+const initialPlayerX = player.center.x;  // Store the initial position of the player
 
 // Initialize game variables
 let gameSpeed = 1;
@@ -98,13 +99,12 @@ function draw() {
     }
   });
 
-  //draw score
-    ctx.beginPath();
-    ctx.fillStyle = "green";
-    ctx.font = "20px sans-serif";
-    ctx.fillText(`Score: ${score}`,20,20)
-    ctx.closePath();
-    
+  // Draw score
+  ctx.beginPath();
+  ctx.fillStyle = "green";
+  ctx.font = "20px sans-serif";
+  ctx.fillText(`Score: ${score}`, 20, 20);
+  ctx.closePath();
 
   // Smoothly transition player position
   if (player.center.x < targetX) {
@@ -152,14 +152,14 @@ window.addEventListener("keypress", (event) => {
   switch (event.key) {
     case "a": {
       // Move player left
-      targetX -= 200;
-      targetX = Math.max(targetX, 0); // Prevent moving out of bounds
+      targetX = Math.max(initialPlayerX - 200, targetX - 200);
+      targetX = Math.max(targetX, player.radius); // Prevent going off the left side
       break;
     }
     case "d": {
       // Move player right
-      targetX += 200;
-      targetX = Math.min(targetX, DIMENSIONS.CANVAS_WIDTH); // Prevent moving out of bounds
+      targetX = Math.min(initialPlayerX + 200, targetX + 200);
+      targetX = Math.min(targetX, DIMENSIONS.CANVAS_WIDTH - player.radius); // Prevent going off the right side
       break;
     }
     case "Enter": {
@@ -172,4 +172,3 @@ window.addEventListener("keypress", (event) => {
     }
   }
 });
-
